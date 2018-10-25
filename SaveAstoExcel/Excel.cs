@@ -48,6 +48,7 @@ namespace ExcelUtility
             oWB.Close();
             return "Success";
         }        
+        
         public string Excel_To_CSV_Conversion(string strFolderPath, string strWorkBookName, string strSheetName) {
             //Gets Excel and gets Activeworkbook and worksheet
             Microsoft.Office.Interop.Excel.Application oXL;
@@ -66,6 +67,9 @@ namespace ExcelUtility
                         oWB = (Microsoft.Office.Interop.Excel.Workbook)wb;
                         break;
                     }
+                }
+                //Changed for testing
+                if (blnWBFound == true) {
                 }
 
                 if (blnWBFound == false) {
