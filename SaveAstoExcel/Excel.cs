@@ -189,6 +189,17 @@ namespace ExcelUtility
             app.DisplayAlerts = true;
             app.Quit();
         }
+
+        public void Htm_To_Excel_Converstion(string strHtmFileFullpath) {
+            ExcelNS.Application app = new ExcelNS.Application();
+            app.DisplayAlerts = false;
+            ExcelNS.Workbook wb = app.Workbooks.Open(strHtmFileFullpath, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            wb.SaveAs(strHtmFileFullpath.Replace(".htm", ".xlsx"), ExcelNS.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, Type.Missing, Type.Missing, ExcelNS.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            wb.Close();
+            app.DisplayAlerts = true;
+            app.Quit();
+        }
+
         public void Excel_Delete_BlankColumns(string excelFilePath, string strHeaderText,string strCheckMisAlignedData = "No") {
             if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
             ExcelNS.Application oXL = new ExcelNS.Application();

@@ -37,6 +37,7 @@
             this.btnCreateNewExcel = new System.Windows.Forms.Button();
             this.btnDeleteRow = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
+            this.button7 = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button1
@@ -51,29 +52,29 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(201, 193);
+            this.button2.Location = new System.Drawing.Point(201, 164);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(159, 76);
+            this.button2.Size = new System.Drawing.Size(159, 50);
             this.button2.TabIndex = 1;
-            this.button2.Text = "button2";
+            this.button2.Text = "Excel to CSV ";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(201, 306);
+            this.button3.Location = new System.Drawing.Point(201, 248);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(159, 85);
+            this.button3.Size = new System.Drawing.Size(159, 53);
             this.button3.TabIndex = 2;
-            this.button3.Text = "button3";
+            this.button3.Text = "CSV To Excel";
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(462, 337);
+            this.button4.Location = new System.Drawing.Point(462, 255);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(159, 85);
+            this.button4.Size = new System.Drawing.Size(159, 46);
             this.button4.TabIndex = 3;
             this.button4.Text = "Excel_Delete_BlankColumns";
             this.button4.UseVisualStyleBackColor = true;
@@ -81,7 +82,7 @@
             // 
             // btnGetHeaderClmn
             // 
-            this.btnGetHeaderClmn.Location = new System.Drawing.Point(462, 229);
+            this.btnGetHeaderClmn.Location = new System.Drawing.Point(456, 169);
             this.btnGetHeaderClmn.Name = "btnGetHeaderClmn";
             this.btnGetHeaderClmn.Size = new System.Drawing.Size(194, 57);
             this.btnGetHeaderClmn.TabIndex = 4;
@@ -129,11 +130,22 @@
             this.button6.UseVisualStyleBackColor = true;
             this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
+            // button7
+            // 
+            this.button7.Location = new System.Drawing.Point(201, 322);
+            this.button7.Name = "button7";
+            this.button7.Size = new System.Drawing.Size(159, 53);
+            this.button7.TabIndex = 9;
+            this.button7.Text = "Htm To Excel";
+            this.button7.UseVisualStyleBackColor = true;
+            this.button7.Click += new System.EventHandler(this.button7_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.button7);
             this.Controls.Add(this.button6);
             this.Controls.Add(this.btnDeleteRow);
             this.Controls.Add(this.btnCreateNewExcel);
@@ -160,6 +172,7 @@
         private System.Windows.Forms.Button btnCreateNewExcel;
         private System.Windows.Forms.Button btnDeleteRow;
         private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button7;
     }
 }
 
