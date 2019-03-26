@@ -103,8 +103,10 @@ namespace ExcelUtility
                         //Check whether this sheet is alreayd selected or not, if not then select it
                         if (oWB.ActiveSheet.name != sht.Name)
                                 sht.Select();
+                        oWB.Application.DisplayAlerts = false;
                         oWB.SaveAs(strFolderPath + "\\" + strWorkBookName, Microsoft.Office.Interop.Excel.XlFileFormat.xlCSV, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange);
                         blnSaved = true;
+                        oWB.Application.DisplayAlerts = true;
                     }
                 }
             }      
@@ -180,9 +182,11 @@ namespace ExcelUtility
         }        
         public void CSV_To_Excel_Converstion(string strCSVFileFullpath) {
             ExcelNS.Application app = new ExcelNS.Application();
+            app.DisplayAlerts = false;
             ExcelNS.Workbook wb = app.Workbooks.Open(strCSVFileFullpath, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-            wb.SaveAs(strCSVFileFullpath.Replace(".csv",".xlsx"), ExcelNS.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, Type.Missing, Type.Missing, ExcelNS.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+            wb.SaveAs(strCSVFileFullpath.Replace(".csv",".xlsx"), ExcelNS.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing, Type.Missing, Type.Missing, ExcelNS.XlSaveAsAccessMode.xlExclusive, Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);            
             wb.Close();
+            app.DisplayAlerts = true;
             app.Quit();
         }
         public void Excel_Delete_BlankColumns(string excelFilePath, string strHeaderText,string strCheckMisAlignedData = "No") {
