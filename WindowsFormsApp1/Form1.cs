@@ -73,5 +73,11 @@ namespace WindowsFormsApp1
             Excel objsave = new Excel();
             objsave.Htm_To_Excel_Converstion("D:\\TaxRawData\\Rachel\\ABC.htm"); 
         }
+
+        private void button8_Click(object sender, EventArgs e) {
+            Excel objsave = new Excel();
+            //objsave.Excel_Delete_BlankColumns("D:\\Users\\28066351\\Documents\\tax1111\\CN93_AR01_201810.xls", "资产");
+            objsave.Excel_Delete_DuplicateHeadings(@"D:\Users\28066351\Documents\Testing\TestDeleteHeadings1.xlsx", "公司代码");
+        }
     }
 }

@@ -179,7 +179,7 @@ namespace ExcelUtility
             Array.Copy(buffer, 0, outBuffer, 3, buffer.Length);
 
             File.WriteAllBytes(csvOutputFile, outBuffer);
-        }        
+        }
         public void CSV_To_Excel_Converstion(string strCSVFileFullpath) {
             ExcelNS.Application app = new ExcelNS.Application();
             app.DisplayAlerts = false;
@@ -189,7 +189,6 @@ namespace ExcelUtility
             app.DisplayAlerts = true;
             app.Quit();
         }
-
         public void Htm_To_Excel_Converstion(string strHtmFileFullpath) {
             ExcelNS.Application app = new ExcelNS.Application();
             app.DisplayAlerts = false;
@@ -199,7 +198,6 @@ namespace ExcelUtility
             app.DisplayAlerts = true;
             app.Quit();
         }
-
         public void Excel_Delete_BlankColumns(string excelFilePath, string strHeaderText,string strCheckMisAlignedData = "No") {
             if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
             ExcelNS.Application oXL = new ExcelNS.Application();
@@ -362,11 +360,60 @@ namespace ExcelUtility
                 xlRange.EntireRow.Hidden = false;
 
             }
+
+            //Delete the header rows, if its in the data...
+            //Delete duplicate headers
             oXL.DisplayAlerts = false;
             oWB.Save();
             oWB.Close();
             oXL.Quit();
         }
+
+        public void Excel_Delete_DuplicateHeadings(string excelFilePath, string strHeaderText) {
+            if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
+            ExcelNS.Application oXL = new ExcelNS.Application();
+            ExcelNS.Workbook oWB;
+            ExcelNS.Worksheet oSht;
+            oWB = oXL.Workbooks.Open(excelFilePath, false, false);
+            oXL.Visible = true;
+            oSht = oWB.Sheets[1];
+            ExcelNS.Range xlRange = oSht.Range["A1:" + GetColumnName(oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Column.ToString()) + oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Row];
+
+            var Data = xlRange.Value;
+
+            //For this function title row should be row no "1"
+            int i = 1;
+            int intFilterClmn = 0;
+            bool blnHeadingFound = false;
+            for (int j = 1; j <= xlRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Column; j++) {
+                if (Data[i, j] != null && Data[i, j].ToString() == strHeaderText) {
+                    intFilterClmn = j;
+                    blnHeadingFound = true;
+                    break;
+                }
+            }
+
+            if (blnHeadingFound == false) {
+                throw new Exception("Heading:" + strHeaderText +" could not found in the 1st row");
+            }
+
+            String[] FilterList = { strHeaderText};
+            //Filter
+            xlRange.AutoFilter(intFilterClmn, FilterList, ExcelNS.XlAutoFilterOperator.xlFilterValues);
+            //Delete the values
+            xlRange.Offset[1, 0].SpecialCells(ExcelNS.XlCellType.xlCellTypeVisible).EntireRow.Delete();
+            //Turn off the filter
+            oSht.AutoFilterMode = false;
+
+            //Delete the header rows, if its in the data...
+            //Delete duplicate headers
+            oXL.DisplayAlerts = false;
+            oWB.Save();
+            oWB.Close();
+            oXL.Quit();
+        }
+
+
         public string Excel_Delete_Row(string excelFilePath, string strStartRowNo, string strEndRowNo, string strSheetNumber = "1") {
             //Gets Excel and gets Activeworkbook and worksheet
             if (!File.Exists(excelFilePath)) return "Excel file not found";
@@ -606,7 +653,6 @@ namespace ExcelUtility
             oXL.Run(strMacroName);
             return "Success";
         }
-
         ////Back up as on 2nd Feb,2019_8.40Pm
         //public void Excel_Delete_BlankColumns(string excelFilePath, string strHeaderText, string strCheckMisAlignedData = "No") {
         //    if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
@@ -767,8 +813,7 @@ namespace ExcelUtility
         //    oWB.Save();
         //    oWB.Close();
         //    oXL.Quit();
-        //}
-        
+        //}        
         public static string GetColumnName(string strColumnNumber) {
             int index = int.Parse(strColumnNumber);
             const string letters = "ZABCDEFGHIJKLMNOPQRSTUVWXY";
