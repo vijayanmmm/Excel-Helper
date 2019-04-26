@@ -21,7 +21,8 @@ namespace WindowsFormsApp1
         private void button1_Click(object sender, EventArgs e)
         {
             Excel objsave = new Excel();
-            objsave.ExportToCSV("D:\\1.xlsx", "D:\\1.csv");
+            //objsave.ExportToCSV("D:\\1.xlsx", "D:\\1.csv");
+            objsave.Excel_DropLastRow(@"C:\Users\abipcadmin\Desktop\CN33_AR01_2019_3.xlsx", "Sheet1");
         }
 
         private void button2_Click(object sender, EventArgs e) {

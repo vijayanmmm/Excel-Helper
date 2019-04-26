@@ -826,5 +826,12 @@ namespace ExcelUtility
                 return letters[LastPos] + "";
         }
 
+        public void Excel_DropLastRow(string pFilePath, string pSheetName)
+        {
+            using (ExcelHelper excel = new ExcelHelper(pFilePath, true, false, true))
+            {
+                excel.DropLastRow(pSheetName);
+            }
+        }
     }
 }
