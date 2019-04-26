@@ -368,7 +368,6 @@ namespace ExcelUtility
             oWB.Close();
             oXL.Quit();
         }
-
         public void Excel_Delete_DuplicateHeadings(string excelFilePath, string strHeaderText) {
             if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
             ExcelNS.Application oXL = new ExcelNS.Application();
@@ -378,7 +377,6 @@ namespace ExcelUtility
             oXL.Visible = true;
             oSht = oWB.Sheets[1];
             ExcelNS.Range xlRange = oSht.Range["A1:" + GetColumnName(oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Column.ToString()) + oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Row];
-
             var Data = xlRange.Value;
 
             //For this function title row should be row no "1"
