@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="Excel.cs" />
     <Compile Include="ExcelHelper.cs" />
+    <Compile Include="ObjectHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

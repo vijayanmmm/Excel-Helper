@@ -835,5 +835,25 @@ namespace ExcelUtility
                 excel.DropLastRow(pSheetName);
             }
         }
+
+        public void Excel_Walmart_Reconciliation(string pFilePath, string pSheetName)
+        {
+            using (ExcelHelper excel = new ExcelHelper(pFilePath, true, false, true))
+            {
+
+                DataTable table = excel.GetData(pSheetName);
+
+                List<string> copyList = new List<string>();
+                copyList.Add("收货金额");
+                copyList.Add("误差");
+
+                List<string> sumList = new List<string>();
+                sumList.Add("交货数量");
+                sumList.Add("税");
+                sumList.Add("净值");
+
+                excel.SearchDifData(table, pSheetName, "采购单号", copyList, sumList);
+            }
+        }
     }
 }

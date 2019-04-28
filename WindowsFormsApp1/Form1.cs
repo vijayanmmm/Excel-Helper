@@ -80,5 +80,11 @@ namespace WindowsFormsApp1
             //objsave.Excel_Delete_BlankColumns("D:\\Users\\28066351\\Documents\\tax1111\\CN93_AR01_201810.xls", "资产");
             objsave.Excel_Delete_DuplicateHeadings(@"D:\Users\28066351\Documents\Testing\TestDeleteHeadings1.xlsx", "公司代码");
         }
+
+        private void button9_Click(object sender, EventArgs e)
+        {
+            Excel excel = new Excel();
+            excel.Excel_Walmart_Reconciliation(@"D:\LOG\沃尔玛\Walmart_Reconciliation.xlsx", "Sheet4");
+        }
     }
 }
