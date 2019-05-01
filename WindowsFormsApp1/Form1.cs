@@ -86,5 +86,10 @@ namespace WindowsFormsApp1
             Excel excel = new Excel();
             excel.Excel_Walmart_Reconciliation(@"D:\LOG\沃尔玛\Walmart_Reconciliation.xlsx", "Sheet4");
         }
+
+        private void button10_Click(object sender, EventArgs e) {
+            Excel excel = new Excel();
+            excel.Excel_Remove_Duplicates(@"D:\tax\CN06_SALESREPORT_2019_3.xlsx", "物料号");
+        }
     }
 }

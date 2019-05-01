@@ -410,7 +410,43 @@ namespace ExcelUtility
             oWB.Close();
             oXL.Quit();
         }
+        public void Excel_Remove_Duplicates(string excelFilePath, string strHeaderText) {
+            if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
+            ExcelNS.Application oXL = new ExcelNS.Application();
+            ExcelNS.Workbook oWB;
+            ExcelNS.Worksheet oSht;
+            oWB = oXL.Workbooks.Open(excelFilePath, false, false);
+            oXL.Visible = true;
+            oSht = oWB.Sheets[1];
+            ExcelNS.Range xlRange = oSht.Range["A1:" + GetColumnName(oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Column.ToString()) + oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Row];
+            var Data = xlRange.Value;
 
+            //For this function title row should be row no "1"
+            int i = 1;
+            int intFilterClmn = 0;
+            bool blnHeadingFound = false;
+            for (int j = 1; j <= xlRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Column; j++) {
+                if (Data[i, j] != null && Data[i, j].ToString() == strHeaderText) {
+                    intFilterClmn = j;
+                    blnHeadingFound = true;
+                    break;
+                }
+            }
+
+            if (blnHeadingFound == false) {
+                throw new Exception("Heading:" + strHeaderText + " could not found in the 1st row");
+            }
+
+            //Remove duplicates
+            xlRange.RemoveDuplicates(intFilterClmn);
+
+            //Delete the header rows, if its in the data...
+            //Delete duplicate headers
+            oXL.DisplayAlerts = false;
+            oWB.Save();
+            oWB.Close();
+            oXL.Quit();
+        }
 
         public string Excel_Delete_Row(string excelFilePath, string strStartRowNo, string strEndRowNo, string strSheetNumber = "1") {
             //Gets Excel and gets Activeworkbook and worksheet
