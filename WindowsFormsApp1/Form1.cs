@@ -97,5 +97,12 @@ namespace WindowsFormsApp1
             Excel excel = new Excel();
             excel.Excel_Filter_Delete_Row(@"D:\net\20190515.xlsx", "客户", "");
         }
+
+        private void button12_Click(object sender, EventArgs e)
+        {
+            Excel excel = new Excel();
+          String output =  excel.Excel_Copy_Data_UsingSheetName_AllData(@"D:\RPA\PBS\2019520.xls", @"D:\RPA\PBS\价格清单.xlsx", "2019520", "系统价格清单","2");
+            MessageBox.Show(output);
+        }
     }
 }

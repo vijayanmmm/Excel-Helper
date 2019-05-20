@@ -970,7 +970,7 @@ namespace ExcelUtility
                 if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strCopySheetName.ToLower().Trim())
                 {
                     wsCopySheet = (ExcelNS._Worksheet)sheet;
-                    Marshal.ReleaseComObject(sheet);
+                   // Marshal.ReleaseComObject(sheet);
                     break;
                 }
                 Marshal.ReleaseComObject(sheet);
@@ -980,7 +980,7 @@ namespace ExcelUtility
                 if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strPasteSheetName.ToLower().Trim())
                 {
                     wsPasteSheet = (ExcelNS._Worksheet)sheet;
-                    Marshal.ReleaseComObject(sheet);
+                    //Marshal.ReleaseComObject(sheet);
                     break;
                 }
                 Marshal.ReleaseComObject(sheet);
@@ -989,10 +989,14 @@ namespace ExcelUtility
             if (wsCopySheet == null) return "Copy Sheet name is wrong/not exist";
             if (wsPasteSheet == null) return "Paste Sheet name is wrong/not exist";
 
-            ExcelNS.Range xlCopyRange = wsCopySheet.Range[wsCopySheet.Cells[Convert.ToInt32(strCopyFromRow),1], wsCopySheet.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell)];
+            ExcelNS.Range xlStartRange = wsCopySheet.Cells[Convert.ToInt32(strCopyFromRow),1];
+
+            ExcelNS.Range xlEndRange = wsCopySheet.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell);
+              
+            ExcelNS.Range xlCopyRange = wsCopySheet.Range[xlStartRange, xlEndRange];
             wsCopySheet.Activate();
             xlCopyRange.Copy();
-            ExcelNS.Range xlPasteRange = wsCopySheet.Range["A" +  (wsCopySheet.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Row+1).ToString()];
+            ExcelNS.Range xlPasteRange = wsPasteSheet.Range["A" +  (wsPasteSheet.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Row+1).ToString()];
             wsPasteSheet.Activate();
             xlPasteRange.PasteSpecial(ExcelNS.XlPasteType.xlPasteAll);
 
