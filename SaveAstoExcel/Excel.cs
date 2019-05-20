@@ -899,5 +899,127 @@ namespace ExcelUtility
                 excel.SearchDifData(table, pSheetName, "采购单号", copyList, sumList);
             }
         }
+
+        public void Excel_Filter_Delete_Row(string excelFilePath, string strHeaderText,string strFilterValue)
+        {
+            if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
+            ExcelNS.Application oXL = new ExcelNS.Application();
+            ExcelNS.Workbook oWB;
+            ExcelNS.Worksheet oSht;
+            oWB = oXL.Workbooks.Open(excelFilePath, false, false);
+            oXL.Visible = true;
+            oSht = oWB.Sheets[1];
+            ExcelNS.Range xlRange = oSht.Range["A1:" + GetColumnName(oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Column.ToString()) + oSht.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Row];
+            var Data = xlRange.Value;
+
+            //For this function title row should be row no "1"
+            int i = 1;
+            int intFilterClmn = 0;
+            bool blnHeadingFound = false;
+            for (int j = 1; j <= xlRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Column; j++)
+            {
+                if (Data[i, j] != null && Data[i, j].ToString() == strHeaderText)
+                {
+                    intFilterClmn = j;
+                    blnHeadingFound = true;
+                    break;
+                }
+            }
+
+            if (blnHeadingFound == false)
+            {
+                throw new Exception("Heading:" + strHeaderText + " could not found in the 1st row");
+            }
+            if (strFilterValue == "")
+               {
+                strFilterValue = null;
+               }
+            String[] FilterList = { strFilterValue };
+            //Filter
+            xlRange.AutoFilter(intFilterClmn, FilterList, ExcelNS.XlAutoFilterOperator.xlFilterValues);
+            //Delete the values
+            xlRange.Offset[1, 0].SpecialCells(ExcelNS.XlCellType.xlCellTypeVisible).EntireRow.Delete();
+            //Turn off the filter
+            oSht.AutoFilterMode = false;
+
+            //Delete the header rows, if its in the data...
+            //Delete duplicate headers
+            oXL.DisplayAlerts = false;
+            oWB.Save();
+            oWB.Close();
+            oXL.Quit();
+        }
+
+        public string Excel_Copy_Data_UsingSheetName_AllData(string excelFile1Path, string excelFile2Path, string strCopySheetName, string strPasteSheetName, string strCopyFromRow)
+        {
+            //Gets Excel and gets Activeworkbook and worksheet
+            if (!File.Exists(excelFile1Path)) return "Excel file not found";
+            if (!File.Exists(excelFile2Path)) return "Excel file not found";
+            ExcelNS.Application oXL = new ExcelNS.Application();
+            ExcelNS.Workbook oWB, oWB2;
+            oXL.DisplayAlerts = false;
+            oWB = oXL.Workbooks.Open(excelFile1Path, false, false);
+            oWB2 = oXL.Workbooks.Open(excelFile2Path, false, false);
+            oXL.Visible = true;
+
+            ExcelNS._Worksheet wsCopySheet = null;
+            ExcelNS._Worksheet wsPasteSheet = null;
+            //Find the sheet
+            foreach (var sheet in oWB.Sheets)
+            {
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strCopySheetName.ToLower().Trim())
+                {
+                    wsCopySheet = (ExcelNS._Worksheet)sheet;
+                    Marshal.ReleaseComObject(sheet);
+                    break;
+                }
+                Marshal.ReleaseComObject(sheet);
+            }
+            foreach (var sheet in oWB2.Sheets)
+            {
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strPasteSheetName.ToLower().Trim())
+                {
+                    wsPasteSheet = (ExcelNS._Worksheet)sheet;
+                    Marshal.ReleaseComObject(sheet);
+                    break;
+                }
+                Marshal.ReleaseComObject(sheet);
+            }
+
+            if (wsCopySheet == null) return "Copy Sheet name is wrong/not exist";
+            if (wsPasteSheet == null) return "Paste Sheet name is wrong/not exist";
+
+            ExcelNS.Range xlCopyRange = wsCopySheet.Range[wsCopySheet.Cells[Convert.ToInt32(strCopyFromRow),1], wsCopySheet.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell)];
+            wsCopySheet.Activate();
+            xlCopyRange.Copy();
+            ExcelNS.Range xlPasteRange = wsCopySheet.Range["A" +  (wsCopySheet.UsedRange.SpecialCells(ExcelNS.XlCellType.xlCellTypeLastCell).Row+1).ToString()];
+            wsPasteSheet.Activate();
+            xlPasteRange.PasteSpecial(ExcelNS.XlPasteType.xlPasteAll);
+
+
+            Marshal.ReleaseComObject(xlCopyRange);
+            Marshal.ReleaseComObject(xlPasteRange);
+            xlCopyRange = null;
+            xlPasteRange = null;
+
+            Marshal.ReleaseComObject(wsCopySheet);
+            Marshal.ReleaseComObject(wsPasteSheet);
+            wsCopySheet = null;
+            wsPasteSheet = null;
+
+            oWB.Close();
+            oWB2.Save();
+            oWB2.Close();
+            Marshal.ReleaseComObject(oWB);
+            Marshal.ReleaseComObject(oWB2);
+            oWB = null;
+            oWB2 = null;
+            oXL.DisplayAlerts = true;
+            oXL.Quit();
+            Marshal.ReleaseComObject(oXL);
+            oXL = null;
+
+            return "Success";
+        }
     }
 }

@@ -91,5 +91,11 @@ namespace WindowsFormsApp1
             Excel excel = new Excel();
             excel.Excel_Remove_Duplicates(@"D:\tax\CN06_SALESREPORT_2019_3.xlsx", "物料号");
         }
+
+        private void button11_Click(object sender, EventArgs e)
+        {
+            Excel excel = new Excel();
+            excel.Excel_Filter_Delete_Row(@"D:\net\20190515.xlsx", "客户", "");
+        }
     }
 }
