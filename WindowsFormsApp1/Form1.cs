@@ -104,5 +104,11 @@ namespace WindowsFormsApp1
           String output =  excel.Excel_Copy_Data_UsingSheetName_AllData(@"D:\RPA\PBS\2019520.xls", @"D:\RPA\PBS\价格清单.xlsx", "2019520", "系统价格清单","2");
             MessageBox.Show(output);
         }
+
+        private void button13_Click(object sender, EventArgs e) {
+            Excel excel = new Excel();
+            String output = excel.Excel_Copy_Data_UsingSheetName(@"D:\LOG_DATA\201952_ZVCN014_0.xlsx", @"D:\LOG_DATA\201952_ZVCN014_0 - Copy.xlsx", "201952_ZVCN014_0", "201952_ZVCN014_0","A1:BZ1000", "A1:BZ1000");
+            MessageBox.Show(output);
+        }
     }
 }

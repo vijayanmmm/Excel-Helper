@@ -447,7 +447,6 @@ namespace ExcelUtility
             oWB.Close();
             oXL.Quit();
         }
-
         public string Excel_Delete_Row(string excelFilePath, string strStartRowNo, string strEndRowNo, string strSheetNumber = "1") {
             //Gets Excel and gets Activeworkbook and worksheet
             if (!File.Exists(excelFilePath)) return "Excel file not found";
@@ -526,8 +525,8 @@ namespace ExcelUtility
         }
         public string Excel_Copy_Data_UsingSheetName(string excelFile1Path, string excelFile2Path, string strCopySheetName, string strPasteSheetName, string strCopyRange, string strPasteRange) {
             //Gets Excel and gets Activeworkbook and worksheet
-            if (!File.Exists(excelFile1Path)) return "Excel file not found";
-            if (!File.Exists(excelFile2Path)) return "Excel file not found";
+            if (!File.Exists(excelFile1Path)) throw new Exception("Excel file not found");
+            if (!File.Exists(excelFile2Path))  throw new Exception("Excel file not found");
             ExcelNS.Application oXL = new ExcelNS.Application();
             ExcelNS.Workbook oWB, oWB2;
             oXL.DisplayAlerts = false;
@@ -541,7 +540,7 @@ namespace ExcelUtility
             foreach (var sheet in oWB.Sheets) {
                 if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strCopySheetName.ToLower().Trim()) {
                     wsCopySheet = (ExcelNS._Worksheet)sheet;
-                    Marshal.ReleaseComObject(sheet);                    
+                    //Marshal.ReleaseComObject(sheet);                    
                     break;
                 }
                 Marshal.ReleaseComObject(sheet);
@@ -549,7 +548,7 @@ namespace ExcelUtility
             foreach (var sheet in oWB2.Sheets) {
                 if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strPasteSheetName.ToLower().Trim()) {
                     wsPasteSheet = (ExcelNS._Worksheet)sheet;
-                    Marshal.ReleaseComObject(sheet);
+                    //Marshal.ReleaseComObject(sheet);
                     break;
                 }
                 Marshal.ReleaseComObject(sheet);
@@ -564,7 +563,6 @@ namespace ExcelUtility
             ExcelNS.Range xlPasteRange = wsPasteSheet.Range[strPasteRange];
             wsPasteSheet.Activate();
             xlPasteRange.PasteSpecial(ExcelNS.XlPasteType.xlPasteAll);
-
 
             Marshal.ReleaseComObject(xlCopyRange);
             Marshal.ReleaseComObject(xlPasteRange);
@@ -861,7 +859,6 @@ namespace ExcelUtility
             else
                 return letters[LastPos] + "";
         }
-
         public void Excel_DropLastRow(string pFilePath, string pSheetName)
         {
             using (ExcelHelper excel = new ExcelHelper(pFilePath, true, false, true))
@@ -869,7 +866,6 @@ namespace ExcelUtility
                 excel.DropLastRow(pSheetName);
             }
         }
-
         public void XLS_To_XLSX_Converstion(string strHtmFileFullpath) {
             ExcelNS.Application app = new ExcelNS.Application();
             app.DisplayAlerts = false;
@@ -879,7 +875,6 @@ namespace ExcelUtility
             app.DisplayAlerts = true;
             app.Quit();
         }
-
         public void Excel_Walmart_Reconciliation(string pFilePath, string pSheetName)
         {
             using (ExcelHelper excel = new ExcelHelper(pFilePath, true, false, true))
@@ -899,7 +894,6 @@ namespace ExcelUtility
                 excel.SearchDifData(table, pSheetName, "采购单号", copyList, sumList);
             }
         }
-
         public void Excel_Filter_Delete_Row(string excelFilePath, string strHeaderText,string strFilterValue)
         {
             if (!File.Exists(excelFilePath)) throw new FileNotFoundException(excelFilePath);
@@ -949,7 +943,6 @@ namespace ExcelUtility
             oWB.Close();
             oXL.Quit();
         }
-
         public string Excel_Copy_Data_UsingSheetName_AllData(string excelFile1Path, string excelFile2Path, string strCopySheetName, string strPasteSheetName, string strCopyFromRow)
         {
             //Gets Excel and gets Activeworkbook and worksheet
