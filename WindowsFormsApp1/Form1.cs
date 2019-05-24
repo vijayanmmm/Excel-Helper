@@ -107,7 +107,8 @@ namespace WindowsFormsApp1
 
         private void button13_Click(object sender, EventArgs e) {
             Excel excel = new Excel();
-            String output = excel.Excel_Copy_Data_UsingSheetName(@"D:\LOG_DATA\201952_ZVCN014_0.xlsx", @"D:\LOG_DATA\201952_ZVCN014_0 - Copy.xlsx", "201952_ZVCN014_0", "201952_ZVCN014_0","A1:BZ1000", "A1:BZ1000");
+            //String output = excel.Excel_Copy_Data_UsingSheetName(@"D:\LOG_DATA\201952_ZVCN014_0.xlsx", @"D:\LOG_DATA\201952_ZVCN014_0 - Copy.xlsx", "201952_ZVCN014_0", "201952_ZVCN014_0","A1:BZ1000", "A1:BZ1000");
+            String output = excel.Excel_Copy_Data_UsingSheetName(@"D:\Data Center\Finance\Query_IRRS_02_单体现金流量表查看_AC1903_CN06.xlsx", @"D:\Data Center\Finance\FS Report and Recon_AC1903_CN06.xlsx", "09cf ", "BPC PL", "A1:BZ1000", "A1:BZ1000");
             MessageBox.Show(output);
         }
     }

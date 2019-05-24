@@ -538,15 +538,17 @@ namespace ExcelUtility
             ExcelNS._Worksheet wsPasteSheet = null;
             //Find the sheet
             foreach (var sheet in oWB.Sheets) {
-                if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strCopySheetName.ToLower().Trim()) {
+                //Console.WriteLine(((ExcelNS._Worksheet)sheet).Name.ToLower());
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower().Trim() == strCopySheetName.ToLower().Trim()) {
                     wsCopySheet = (ExcelNS._Worksheet)sheet;
-                    //Marshal.ReleaseComObject(sheet);                    
+                    //Marshal.ReleaseComObject(sheet);
+
                     break;
                 }
                 Marshal.ReleaseComObject(sheet);
             }
             foreach (var sheet in oWB2.Sheets) {
-                if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strPasteSheetName.ToLower().Trim()) {
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower().Trim() == strPasteSheetName.ToLower().Trim()) {
                     wsPasteSheet = (ExcelNS._Worksheet)sheet;
                     //Marshal.ReleaseComObject(sheet);
                     break;
@@ -554,8 +556,8 @@ namespace ExcelUtility
                 Marshal.ReleaseComObject(sheet);
             }
 
-            if (wsCopySheet == null) return "Copy Sheet name is wrong/not exist";
-            if (wsPasteSheet == null) return "Paste Sheet name is wrong/not exist";
+            if (wsCopySheet == null) throw new System.Exception("Copy Sheet name is wrong/not exist");
+            if (wsPasteSheet == null) throw new System.Exception("Paste Sheet name is wrong/not exist");
 
             ExcelNS.Range xlCopyRange = wsCopySheet.Range[strCopyRange];
             wsCopySheet.Activate();
@@ -946,8 +948,8 @@ namespace ExcelUtility
         public string Excel_Copy_Data_UsingSheetName_AllData(string excelFile1Path, string excelFile2Path, string strCopySheetName, string strPasteSheetName, string strCopyFromRow)
         {
             //Gets Excel and gets Activeworkbook and worksheet
-            if (!File.Exists(excelFile1Path)) return "Excel file not found";
-            if (!File.Exists(excelFile2Path)) return "Excel file not found";
+            if (!File.Exists(excelFile1Path)) throw new Exception("Excel file not found");
+            if (!File.Exists(excelFile2Path)) throw new Exception("Excel file not found");
             ExcelNS.Application oXL = new ExcelNS.Application();
             ExcelNS.Workbook oWB, oWB2;
             oXL.DisplayAlerts = false;
@@ -960,7 +962,7 @@ namespace ExcelUtility
             //Find the sheet
             foreach (var sheet in oWB.Sheets)
             {
-                if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strCopySheetName.ToLower().Trim())
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower().Trim() == strCopySheetName.ToLower().Trim())
                 {
                     wsCopySheet = (ExcelNS._Worksheet)sheet;
                    // Marshal.ReleaseComObject(sheet);
@@ -970,7 +972,7 @@ namespace ExcelUtility
             }
             foreach (var sheet in oWB2.Sheets)
             {
-                if (((ExcelNS._Worksheet)sheet).Name.ToLower() == strPasteSheetName.ToLower().Trim())
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower().Trim() == strPasteSheetName.ToLower().Trim())
                 {
                     wsPasteSheet = (ExcelNS._Worksheet)sheet;
                     //Marshal.ReleaseComObject(sheet);
@@ -979,8 +981,8 @@ namespace ExcelUtility
                 Marshal.ReleaseComObject(sheet);
             }
 
-            if (wsCopySheet == null) return "Copy Sheet name is wrong/not exist";
-            if (wsPasteSheet == null) return "Paste Sheet name is wrong/not exist";
+            if (wsCopySheet == null) throw new Exception("Copy Sheet name is wrong/not exist");
+            if (wsPasteSheet == null) throw new Exception("Paste Sheet name is wrong/not exist");
 
             ExcelNS.Range xlStartRange = wsCopySheet.Cells[Convert.ToInt32(strCopyFromRow),1];
 
