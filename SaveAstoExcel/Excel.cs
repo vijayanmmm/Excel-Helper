@@ -590,6 +590,82 @@ namespace ExcelUtility
 
             return "Success";
         }
+
+        public string Excel_Copy_Data_UsingSheetName_AllAndValue(string excelFile1Path, string excelFile2Path, string strCopySheetName, string strPasteSheetName, string strCopyRange, string strPasteRange) {
+            //Gets Excel and gets Activeworkbook and worksheet
+            if (!File.Exists(excelFile1Path)) throw new Exception("Excel file not found");
+            if (!File.Exists(excelFile2Path)) throw new Exception("Excel file not found");
+            ExcelNS.Application oXL = new ExcelNS.Application();
+            ExcelNS.Workbook oWB, oWB2;
+            oXL.DisplayAlerts = false;
+            oWB = oXL.Workbooks.Open(excelFile1Path, false, false);
+            oWB2 = oXL.Workbooks.Open(excelFile2Path, false, false);
+            oXL.Visible = true;
+
+            ExcelNS._Worksheet wsCopySheet = null;
+            ExcelNS._Worksheet wsPasteSheet = null;
+            //Find the sheet
+            foreach (var sheet in oWB.Sheets) {
+                //Console.WriteLine(((ExcelNS._Worksheet)sheet).Name.ToLower());
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower().Trim() == strCopySheetName.ToLower().Trim()) {
+                    wsCopySheet = (ExcelNS._Worksheet)sheet;
+                    //Marshal.ReleaseComObject(sheet);
+
+                    break;
+                }
+                Marshal.ReleaseComObject(sheet);
+            }
+            foreach (var sheet in oWB2.Sheets) {
+                if (((ExcelNS._Worksheet)sheet).Name.ToLower().Trim() == strPasteSheetName.ToLower().Trim()) {
+                    wsPasteSheet = (ExcelNS._Worksheet)sheet;
+                    //Marshal.ReleaseComObject(sheet);
+                    break;
+                }
+                Marshal.ReleaseComObject(sheet);
+            }
+
+            if (wsCopySheet == null) throw new System.Exception("Copy Sheet name is wrong/not exist");
+            if (wsPasteSheet == null) throw new System.Exception("Paste Sheet name is wrong/not exist");
+
+            ExcelNS.Range xlCopyRange = wsCopySheet.Range[strCopyRange];
+            ExcelNS.Range xlPasteRange = wsPasteSheet.Range[strPasteRange];
+
+            //First time paste all
+            wsCopySheet.Activate();
+            xlCopyRange.Copy();            
+            wsPasteSheet.Activate();
+            xlPasteRange.PasteSpecial(ExcelNS.XlPasteType.xlPasteAll);
+            //Second time paste only values
+            wsCopySheet.Activate();
+            xlCopyRange.Copy();
+            wsPasteSheet.Activate();
+            xlPasteRange.PasteSpecial(ExcelNS.XlPasteType.xlPasteValues);
+
+            Marshal.ReleaseComObject(xlCopyRange);
+            Marshal.ReleaseComObject(xlPasteRange);
+            xlCopyRange = null;
+            xlPasteRange = null;
+
+            Marshal.ReleaseComObject(wsCopySheet);
+            Marshal.ReleaseComObject(wsPasteSheet);
+            wsCopySheet = null;
+            wsPasteSheet = null;
+
+            oWB.Close();
+            oWB2.Save();
+            oWB2.Close();
+            Marshal.ReleaseComObject(oWB);
+            Marshal.ReleaseComObject(oWB2);
+            oWB = null;
+            oWB2 = null;
+            oXL.DisplayAlerts = true;
+            oXL.Quit();
+            Marshal.ReleaseComObject(oXL);
+            oXL = null;
+
+            return "Success";
+        }
+
         public void Excel_CreateNewExcel(string strExcelFileFullpath) {
             ExcelNS.Application app = new ExcelNS.Application();
             ExcelNS.Workbook wb = app.Workbooks.Add();
@@ -606,7 +682,7 @@ namespace ExcelUtility
             Microsoft.Office.Interop.Excel.Application oXL;
             Microsoft.Office.Interop.Excel.Workbook oWB;
             oXL = (Microsoft.Office.Interop.Excel.Application)System.Runtime.InteropServices.Marshal.GetActiveObject("Excel.Application");
-            oXL.Visible = true;
+            //oXL.Visible = true;
             oWB = (Microsoft.Office.Interop.Excel.Workbook)oXL.ActiveWorkbook;
             bool blnWBFound = false;
             string strWBName,strHeaderIndex = "0";
@@ -630,6 +706,7 @@ namespace ExcelUtility
             if (blnWBFound == false) {
                 return "Excel workbook" + strWorkBookName + " is not found";
             }
+            oXL.Visible = true;
 
             //Find the title
             ExcelNS._Worksheet wsSheet = oWB.Sheets[Convert.ToInt32(strSheetNumber)];

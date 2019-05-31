@@ -44,7 +44,8 @@ namespace WindowsFormsApp1
         private void btnGetHeaderClmn_Click(object sender, EventArgs e) {
             Excel objsave = new Excel();
             //objsave.Excel_Delete_BlankColumns("D:\\Users\\28066351\\Documents\\tax1111\\CN93_AR01_201810.xls", "资产");
-           MessageBox.Show( objsave.Excel_GetHeader_Index("CN15_32949.xlsx", "采购订单", "1","1"));
+           //MessageBox.Show( objsave.Excel_GetHeader_Index("CN15_32949.xlsx", "采购订单", "1","1"));
+            MessageBox.Show(objsave.Excel_GetHeader_Index("CN51_25247.xlsx", "采购订单", "1", "1"));
         }
 
         private void button5_Click(object sender, EventArgs e) {
